@@ -1,0 +1,15 @@
+account:
+  id: e46106d8-e382-4d1f-8182-9d63983ed6d4
+  name: TestTest Local
+project:
+  id: 27
+  name: checkly-cli
+checkDefaults:
+  locations: ['us-east-1', 'eu-central-1']
+  interval: 5min
+  alerts:
+    - type: email
+      sendOn:
+        - recover
+        - degrade
+        - fail
