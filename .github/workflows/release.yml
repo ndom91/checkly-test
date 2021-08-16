@@ -8,9 +8,13 @@ on:
   pull_request:
 
 jobs:
-  test:
-    name: Test
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
     steps:
       - name: Init
         uses: actions/checkout@v2
@@ -18,7 +22,17 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
       # - name: Dependencies
         # uses: bahmutov/npm-install@v1
-      - name: Run tests
-        run: npx @checkly/cli@canary checks deploy
+      - name: Setup .npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN}} " > .npmrc
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "always-auth=true" >> .npmrc
+      - name: Sync Checks
+        run: |
+          npx @checkly/cli@canary conf apiKey ${{ secrets.CHECKLY_API_KEY }}
+          npx @checkly/cli@canary checks deploy
+        env:
+          CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
