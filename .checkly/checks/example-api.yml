@@ -1,0 +1,42 @@
+checkType: API
+name: "API Check 1"
+frequency: 5
+activated: true
+muted: false
+shouldFail: false
+doubleCheck: true
+locations:
+- eu-central-1
+- eu-west-3
+request:
+  assertions: []
+  method: GET
+  url: https://google.com
+  followRedirects: true
+  body: ''
+  bodyType: NONE
+  queryParameters: []
+  headers: []
+  basicAuth:
+    username: ''
+    password: ''
+alertSettings:
+  muted: false
+  escalationType: RUN_BASED
+  runBasedEscalation:
+    failedRunThreshold: 1
+  timeBasedEscalation:
+    minutesFailingThreshold: 5
+  reminders:
+    amount: 0
+    interval: 5
+  sslCertificates:
+    enabled: true
+    alertThreshold: 30
+useGlobalAlertSettings: true
+tags: []
+setupSnippetId:
+tearDownSnippetId:
+degradedResponseTime: 5000
+maxResponseTime: 20000
+
